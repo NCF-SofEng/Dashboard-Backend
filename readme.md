@@ -11,3 +11,7 @@ Run ``npm i`` in the terminal to install the required dependencies.
 
 Dependency Documentation:
 https://expressjs.com/en/4x/api.html
+
+## Examples:
+HTTP GET request example:
+ - src/examples/httpGetRequest.js -- ``node src/examples/httpGetRequest.js``
