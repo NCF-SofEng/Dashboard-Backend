@@ -1,7 +1,0 @@
-# Ignore all bloat files from the repository
-
-## Folders
-node_modules/
-
-## Files
-package-lock.json
