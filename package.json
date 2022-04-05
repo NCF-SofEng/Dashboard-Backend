@@ -1,0 +1,19 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/NCF-SofEng/Dashboard-Backend",
+  "author": "Furry <ender@thefluegges.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "tsc": "tsc",
+    "go": "npm run tsc && node ./dist/index.js"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.0-dev.20220404"
+  },
+  "dependencies": {
+    "node-fetch": "^3.2.3"
+  }
+}
