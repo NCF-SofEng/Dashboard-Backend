@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 import { Database } from "./libs/database.js";
 import { Scraper } from "./libs/scraper.js";
@@ -24,6 +25,9 @@ const scraper = new Scraper();
 
 const port = parseInt(process.env.WebServerPort as any) ||
     Logger.warn("No Port Specified, falling back to 8080.") || 8080;
+
+// Give our Server CORS support (for api calls)
+server.use(cors());
 
 // Give our Server JSON support
 server.use(express.json());
