@@ -43,9 +43,11 @@ server.use("/api/messageboard", MessageboardRouter(database));
 // Test spotify
 import {Spotify} from "./libs/spotify.js";
 const spotify = new Spotify(process.env.SpotifyApiClient as string, process.env.SpotifyApiSecret as string);
-spotify.generateToken();
 
-Promise.all([server.listen(port), database.connect()]).then(() => {
+Promise.all([server.listen(port), database.connect(), spotify.generateToken()]).then(() => {
     Logger.info(`Web Server running on port ${port}`);
+
+    spotify.getCreep();
+
     taskManager.start();
 })

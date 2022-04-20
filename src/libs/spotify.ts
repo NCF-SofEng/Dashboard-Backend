@@ -21,11 +21,11 @@ export class Spotify {
             body: "grant_type=client_credentials"
         }).then(res => res.json()).then(data => new SpotifyCredentials(data));
 
-        // console.log(credentials.token);
+        this.token = credentials.token;
     }
 
     public getCreep() {
-        fetch(this.root + "/tracks/70LcF31zb1H0PyJoS1Sx1r", {
+        fetch(this.root + "tracks/70LcF31zb1H0PyJoS1Sx1r", {
             method: "GET",
             headers: {
                 Authorization: "Bearer " + this.token
