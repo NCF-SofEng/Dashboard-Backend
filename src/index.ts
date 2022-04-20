@@ -40,6 +40,11 @@ server.use("/api/media", MediaRouter(database));
 server.use("/api/analytics", AnalyticsRouter(database));
 server.use("/api/messageboard", MessageboardRouter(database));
 
+// Test spotify
+import {Spotify} from "./libs/spotify.js";
+const spotify = new Spotify(process.env.SpotifyApiClient as string, process.env.SpotifyApiSecret as string);
+spotify.generateToken();
+
 Promise.all([server.listen(port), database.connect()]).then(() => {
     Logger.info(`Web Server running on port ${port}`);
     taskManager.start();
