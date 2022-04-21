@@ -40,7 +40,14 @@ server.use("/api/media", MediaRouter(database));
 server.use("/api/analytics", AnalyticsRouter(database));
 server.use("/api/messageboard", MessageboardRouter(database));
 
-Promise.all([server.listen(port), database.connect()]).then(() => {
+// Test spotify
+import {Spotify} from "./libs/spotify.js";
+const spotify = new Spotify(process.env.SpotifyApiClient as string, process.env.SpotifyApiSecret as string);
+
+Promise.all([server.listen(port), database.connect(), spotify.generateToken()]).then(() => {
     Logger.info(`Web Server running on port ${port}`);
+
+    spotify.getCreep();
+
     taskManager.start();
 })
