@@ -32,16 +32,13 @@ export default function(db: Database): Router {
 
     // Pls fix ender this doesn't work <3
     router.get("/getMessages", async (req, res) => {
-        const after = req.body.after ? req.body.after :
-            new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 365)).getTime(); // year ago
-
-        const messages = await db.collection("messages").find({
-            date: {
-                $gt: after
+        await db.collection("messages").find({}).toArray((err, docs) => {
+            if (err) {
+                res.json(ApiResponse.Error("Error getting messages."));
+            } else {
+                res.json(ApiResponse.Response(docs));
             }
         });
-
-        return res.json(messages);
     })
 
     // pls test this ender it still probably doesn't work <3
