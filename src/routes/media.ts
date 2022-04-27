@@ -5,6 +5,7 @@ import { Database } from "../libs/database.js";
 export default function(db: Database): Router {
     const router = Router();
 
+    // Fetch the daily-refreshed twitter tweets by latest.
     router.get("/tweets", (req, res) => {
         db.collection("tweets").find({}).toArray((err, docs) => {
             if (err) {
@@ -15,5 +16,6 @@ export default function(db: Database): Router {
         });
     });
 
+    // Fetch the historical twitter tweets.
     return router;
 }

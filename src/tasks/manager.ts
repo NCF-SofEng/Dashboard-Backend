@@ -3,13 +3,35 @@ import chalk from "chalk";
 import { Twitter } from "../libs/twitter.js";
 import { Database } from "../libs/database.js";
 
+// A singleton class that manages the background tasks.
 export class TaskManager {
+    private lastExecution: Date = null as any;
+    private static _instance: TaskManager;
     private interval: NodeJS.Timer;
+    private startTime = new Date();
     private db: Database;
 
     constructor(db: Database) {
-        this.db = db;
+        TaskManager._instance = this;
         this.interval = null as any;
+        this.db = db;
+    }
+
+    public static instance() {
+        if (TaskManager._instance) {
+            return TaskManager._instance;
+        } else {
+            throw new Error("TaskManager is not initialized.");
+        }
+    }
+
+    // Some utility singleton functions for use in API routes.
+    public static lastExecution(): Date {
+        return TaskManager.instance().lastExecution;
+    }
+
+    public static startTime(): Date {
+        return TaskManager.instance().startTime;
     }
 
     public async start() {
@@ -29,6 +51,9 @@ export class TaskManager {
         Logger.info("Running daily tasks...");
         await this.run();
         Logger.info(`Daily tasks completed in ${chalk.blue((Date.now() - start) / 1000).toString()} seconds.`);
+
+        // Update the last execution time.
+        this.lastExecution = new Date();
     }
 
     public async run() {

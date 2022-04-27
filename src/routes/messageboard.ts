@@ -30,7 +30,6 @@ export default function(db: Database): Router {
         res.json(ApiResponse.Response("OK"));
     })
 
-    // Pls fix ender this doesn't work <3
     router.get("/getMessages", async (req, res) => {
         await db.collection("messages").find({}).toArray((err, docs) => {
             if (err) {

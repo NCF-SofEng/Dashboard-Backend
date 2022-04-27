@@ -2,13 +2,13 @@ import express from "express";
 import cors from "cors";
 
 import { Database } from "./libs/database.js";
-import { Scraper } from "./libs/scraper.js";
 import { Twitter } from "./libs/twitter.js";
 import { Logger, MiddlewareLogger } from "./libs/logging.js";
 
 import MediaRouter from "./routes/media.js";
 import AnalyticsRouter from "./routes/analytics.js";
 import MessageboardRouter from "./routes/messageboard.js";
+import SensorRouter from "./routes/sensors.js";
 
 // Initilize dotenv & the Logging System
 import dotenv from "dotenv";
@@ -20,8 +20,6 @@ const server = express();
 const database = new Database(process.env.MongoAuthenticatedURI as string, "RedTideDashboard");
 const twitter = new Twitter(process.env.TwitterBearer as string);
 const taskManager = new TaskManager(database);
-
-const scraper = new Scraper();
 
 const port = parseInt(process.env.WebServerPort as any) ||
     Logger.warn("No Port Specified, falling back to 8080.") || 8080;
@@ -39,6 +37,7 @@ server.use(MiddlewareLogger);
 server.use("/api/media", MediaRouter(database));
 server.use("/api/analytics", AnalyticsRouter(database));
 server.use("/api/messageboard", MessageboardRouter(database));
+server.use("/api/sensors", SensorRouter(database));
 
 // Test spotify
 import {Spotify} from "./libs/spotify.js";
