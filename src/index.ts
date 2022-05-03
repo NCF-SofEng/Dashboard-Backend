@@ -28,7 +28,9 @@ const port = parseInt(process.env.WebServerPort as any) ||
 server.use(cors());
 
 // Give our Server JSON support
-server.use(express.json());
+server.use(express.json({
+    limit: "20mb"
+}));
 
 // Give our server Middleware to handle logging.
 server.use(MiddlewareLogger);
