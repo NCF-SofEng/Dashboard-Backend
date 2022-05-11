@@ -2,13 +2,13 @@ import express from "express";
 import cors from "cors";
 
 import { Database } from "./libs/database.js";
-import { Twitter } from "./libs/twitter.js";
 import { Logger, MiddlewareLogger } from "./libs/logging.js";
 
 import MediaRouter from "./routes/media.js";
 import AnalyticsRouter from "./routes/analytics.js";
 import MessageboardRouter from "./routes/messageboard.js";
 import SensorRouter from "./routes/sensors.js";
+import SpotifyRouter from "./routes/spotify.js";
 
 // Initilize dotenv & the Logging System
 import dotenv from "dotenv";
@@ -18,7 +18,6 @@ Logger.init(3);
 
 const server = express();
 const database = new Database(process.env.MongoAuthenticatedURI as string, "RedTideDashboard");
-const twitter = new Twitter(process.env.TwitterBearer as string);
 const taskManager = new TaskManager(database);
 
 const port = parseInt(process.env.WebServerPort as any) ||
@@ -40,6 +39,7 @@ server.use("/api/media", MediaRouter(database));
 server.use("/api/analytics", AnalyticsRouter(database));
 server.use("/api/messageboard", MessageboardRouter(database));
 server.use("/api/sensors", SensorRouter(database));
+server.use("/api/spotify", SpotifyRouter(database));
 
 // Test spotify
 import {Spotify} from "./libs/spotify.js";
@@ -48,7 +48,7 @@ const spotify = new Spotify(process.env.SpotifyApiClient as string, process.env.
 Promise.all([server.listen(port), database.connect(), spotify.generateToken()]).then(() => {
     Logger.info(`Web Server running on port ${port}`);
 
-    spotify.getCreep();
+    spotify.searchSpotify("harmful algal bloom", "episode", 10);
 
     taskManager.start();
 })
