@@ -24,14 +24,13 @@ export class Spotify {
         this.token = result.access_token;
     }
 
-    public searchSpotify(query: string, type: string, limit: number) {
-        fetch(this.root + "search?" + "query=" + encodeURIComponent(query) + "&type=" + encodeURIComponent(type) +
-              "&limit=" + encodeURIComponent(limit) + "&include_external=audio",
+    public searchSpotify(query: string, type: string) {
+        fetch(`${encodeURIComponent(this.root)}search?q=${encodeURIComponent(query)}&type=${encodeURIComponent(type)}`,
             {
             method: "GET",
             headers: {
                 "Authorization": "Bearer " + this.token,
             }
-        }).then((res) => res.json()).then((data: any) => console.log(data));
+        }).then((res) => res.json()).then((data: any) => console.log(data, `${this.root}search?q=${query}&type=${type}`));
     }
 }

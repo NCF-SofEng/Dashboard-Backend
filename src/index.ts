@@ -48,7 +48,7 @@ const spotify = new Spotify(process.env.SpotifyApiClient as string, process.env.
 Promise.all([server.listen(port), database.connect(), spotify.generateToken()]).then(() => {
     Logger.info(`Web Server running on port ${port}`);
 
-    spotify.searchSpotify("harmful algal bloom", "episode", 10);
+    spotify.searchSpotify("harmful algal bloom", "episode");
 
     taskManager.start();
 })
