@@ -8,6 +8,7 @@ import MediaRouter from "./routes/media.js";
 import AnalyticsRouter from "./routes/analytics.js";
 import MessageboardRouter from "./routes/messageboard.js";
 import SensorRouter from "./routes/sensors.js";
+import YoutubeRouter from "./routes/youtube.js";
 import SpotifyRouter from "./routes/spotify.js";
 
 // Initilize dotenv & the Logging System
@@ -39,6 +40,7 @@ server.use("/api/media", MediaRouter(database));
 server.use("/api/analytics", AnalyticsRouter(database));
 server.use("/api/messageboard", MessageboardRouter(database));
 server.use("/api/sensors", SensorRouter(database));
+server.use("/api/videos", YoutubeRouter(database));
 server.use("/api/spotify", SpotifyRouter(database));
 
 // Test spotify
