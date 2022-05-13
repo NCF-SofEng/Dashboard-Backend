@@ -25,12 +25,22 @@ export class Spotify {
     }
 
     public searchSpotify(query: string, type: string) {
-        fetch(`${encodeURIComponent(this.root)}search?q=${encodeURIComponent(query)}&type=${encodeURIComponent(type)}`,
+        fetch(`${this.root}search?q=${encodeURIComponent(query)}&type=${encodeURIComponent(type)}`,
             {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + this.token,
-            }
-        }).then((res) => res.json()).then((data: any) => console.log(data, `${this.root}search?q=${query}&type=${type}`));
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + this.token
+                }
+            }).then((res) => res.json()).then((data: any) => console.log(data, `${this.root}search?q=${query}&type=${type}`));
+    }
+
+    public getPlaylistItems(id: string): Promise<any> {
+        return fetch(`${this.root}playlists/${id}/tracks`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + this.token
+                }
+            }).then((res) => res.json()) as any;
     }
 }

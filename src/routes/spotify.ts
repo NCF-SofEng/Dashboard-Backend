@@ -5,9 +5,14 @@ import {Database} from "../libs/database.js";
 export default function(db: Database): Router {
     const router = Router();
 
-    router.get("/spotify", async (req, res) => {
-        const episodes = await db.collection("spotify").find({});
-        res.json(ApiResponse.Response(episodes));
+    router.get("/episodes", async (req, res) => {
+        db.collection("spotify").find({}).toArray((err, docs) => {
+            if (err) {
+                res.json(ApiResponse.Error("Error getting spotify episodes"));
+            } else {
+                res.json(ApiResponse.Response(docs));
+            }
+        });
     });
 
     return router;

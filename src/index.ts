@@ -9,6 +9,7 @@ import AnalyticsRouter from "./routes/analytics.js";
 import MessageboardRouter from "./routes/messageboard.js";
 import SensorRouter from "./routes/sensors.js";
 import YoutubeRouter from "./routes/youtube.js";
+import SpotifyRouter from "./routes/spotify.js";
 
 // Initilize dotenv & the Logging System
 import dotenv from "dotenv";
@@ -40,6 +41,7 @@ server.use("/api/analytics", AnalyticsRouter(database));
 server.use("/api/messageboard", MessageboardRouter(database));
 server.use("/api/sensors", SensorRouter(database));
 server.use("/api/youtube", YoutubeRouter(database));
+server.use("/api/spotify", SpotifyRouter(database));
 
 Promise.all([server.listen(port), database.connect()]).then(() => {
     Logger.info(`Web Server running on port ${port}`);
