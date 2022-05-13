@@ -9,7 +9,6 @@ import AnalyticsRouter from "./routes/analytics.js";
 import MessageboardRouter from "./routes/messageboard.js";
 import SensorRouter from "./routes/sensors.js";
 import YoutubeRouter from "./routes/youtube.js";
-import SpotifyRouter from "./routes/spotify.js";
 
 // Initilize dotenv & the Logging System
 import dotenv from "dotenv";
@@ -41,16 +40,8 @@ server.use("/api/analytics", AnalyticsRouter(database));
 server.use("/api/messageboard", MessageboardRouter(database));
 server.use("/api/sensors", SensorRouter(database));
 server.use("/api/videos", YoutubeRouter(database));
-server.use("/api/spotify", SpotifyRouter(database));
 
-// Test spotify
-import {Spotify} from "./libs/spotify.js";
-const spotify = new Spotify(process.env.SpotifyApiClient as string, process.env.SpotifyApiSecret as string);
-
-Promise.all([server.listen(port), database.connect(), spotify.generateToken()]).then(() => {
+Promise.all([server.listen(port), database.connect()]).then(() => {
     Logger.info(`Web Server running on port ${port}`);
-
-    spotify.searchSpotify("harmful algal bloom", "episode");
-
     taskManager.start();
 })
