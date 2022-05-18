@@ -2,6 +2,11 @@ import { Router } from "express";
 import ApiResponse from "../ApiResponse.js";
 import { Database } from "../libs/database.js";
 
+/**
+ * Generates the router for the Twitter API.
+ * @param db The database to use.
+ * @returns The router containing the twitter endpoint.
+ */
 export default function(db: Database): Router {
     const router = Router();
 

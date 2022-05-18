@@ -62,16 +62,22 @@ export class TaskManager {
         ])
     }
     
+    /**
+     * The job that handles twitter tasks, it just gets the most recewnt tweets and stores them in the database,
+     * ignoring (erroring) on the ones that already exist. But fortunately, the errors don't crash it!
+     */
     public async TwitterJob() {
         const twitter = new Twitter(process.env.TwitterBearer as string);
         const tweets = await twitter.getTweets("#RedTide")
             .then((tweets) => tweets.statuses)
+            // Map the id field to the _id field that mongodb uses as a unique identifier
             .then((tweets) => tweets.map((tweet) => {
                 (tweet as any)["_id"] = tweet.id;
                 return tweet;
             }));
 
             try {
+                // Insert all the tweets.
                 const res = await this.db.collection("tweets").insertMany(tweets, { ordered: false });
                 Logger.info(`Inserted ${res.insertedCount} tweets into the database.`);
             } catch (e) {

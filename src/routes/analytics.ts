@@ -3,6 +3,9 @@ import ApiResponse from "../ApiResponse.js";
 import { Database } from "../libs/database.js";
 import { TaskManager } from "../tasks/manager.js";
 
+/**
+ * ! This code is depricated. It was phased out in exchange for the ApiResponse carrying the data instead of this router.
+ */
 export default function(db: Database): Router {
     const router = Router();
 

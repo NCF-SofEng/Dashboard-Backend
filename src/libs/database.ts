@@ -1,6 +1,11 @@
 import MongoDB from "mongodb";
 import { Logger } from "./logging.js";
 
+/** E.F.
+ * The Database Manager class,
+ * All this does is interfaces with the database and allow for it's methods to be accessed
+ * without the code knowing if it's instantiated. (Singleton Pattern for the DB)
+ */
 export class Database {
     private _connectionURL: string;
     private _database: string;
