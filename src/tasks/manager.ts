@@ -2,6 +2,7 @@ import { Logger } from "../libs/logging.js";
 import chalk from "chalk";
 import { Twitter } from "../libs/twitter.js";
 import { Database } from "../libs/database.js";
+import { Youtube } from "../libs/youtube.js"
 
 // A singleton class that manages the background tasks.
 export class TaskManager {
@@ -58,7 +59,7 @@ export class TaskManager {
 
     public async run() {
         await Promise.all([
-            this.TwitterJob()
+            this.TwitterJob(), new Youtube().getvideos(this.db)
         ])
     }
     

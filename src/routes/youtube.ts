@@ -4,7 +4,6 @@ import { Database } from "../libs/database.js";
 
 export default function(db: Database): Router {
     const router = Router();
-
     router.get("/videos", (req, res) => {
         db.collection("youtube-videos").find({}).toArray((err, docs) => {
             if (err) {
