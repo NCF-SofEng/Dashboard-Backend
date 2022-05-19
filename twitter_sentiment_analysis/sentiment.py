@@ -13,6 +13,7 @@ from wordcloud import WordCloud
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
+import contractions
 
 # SKLearn
 from sklearn.linear_model import LogisticRegression
@@ -29,17 +30,6 @@ def preprocess_text(data_original):
     print("Converting all text to lowercase...")
     data = data.str.lower()
 
-    # Get list of english stopwords from NLTK package
-    stops = set(stopwords.words('english'))
-
-    # Use stopword list from nltk to clean stopwords from dataset
-    print("Filtering stopwords...")
-    data = data.apply(
-        # Split all words from given text into list and create new list using only
-        # words that are not in the stopwords list
-        lambda text: " ".join([word for word in str(text).split() if word not in stops])
-    )
-
     # Clean and remove urls from text using built in python regex
     print("Filtering urls...")
     data = data.apply(
@@ -51,6 +41,23 @@ def preprocess_text(data_original):
     print("Filtering mentions...")
     data = data.apply(
         lambda text: re.sub(r'@\w+', '', text)
+    )
+
+    # Expand contractions
+    print("Expanding contractions...")
+    data = data.apply(
+        lambda text: " ".join([contractions.fix(word) for word in text.split()])
+    )
+
+    # Get list of english stopwords from NLTK package
+    stops = set(stopwords.words('english'))
+
+    # Use stopword list from nltk to clean stopwords from dataset
+    print("Filtering stopwords...")
+    data = data.apply(
+        # Split all words from given text into list and create new list using only
+        # words that are not in the stopwords list
+        lambda text: " ".join([word for word in str(text).split() if word not in stops])
     )
 
     # Use built in python punctuation list to clean punctuation from dataset
@@ -86,18 +93,12 @@ def preprocess_text(data_original):
     return data
 
 
-def generate_wordcloud(data_pos, data_neg):
+def generate_wordcloud(data):
     # Generate wordcloud for negative tweets
-    print("Generating negative wordcloud...")
     plt.figure(figsize=(20, 20))
-    wc_neg = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_neg))
-    plt.imshow(wc_neg)
-
-    # Generate wordcloud for positive tweets
-    print("Generating positive wordcloud...")
-    plt.figure(figsize=(20, 20))
-    wc_pos = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data_pos))
-    plt.imshow(wc_pos)
+    wc = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data))
+    plt.imshow(wc)
+    plt.show()
 
 
 def generate_confusion_matrix(y_test, y_pred):
@@ -113,6 +114,7 @@ def generate_confusion_matrix(y_test, y_pred):
     plt.xlabel("Predicted Values", fontdict={'size': 14}, labelpad=10)
     plt.ylabel("Actual Values", fontdict={'size': 14}, labelpad=10)
     plt.title("Confusion Matrix", fontdict={'size': 14}, pad=20)
+    plt.show()
 
 
 def generate_roc_curve(y_test, y_pred):
@@ -127,6 +129,7 @@ def generate_roc_curve(y_test, y_pred):
     plt.ylabel("True Positive Rate")
     plt.title("ROC Curve")
     plt.legend(loc="lower right")
+    plt.show()
 
 
 def main():
@@ -166,27 +169,32 @@ def main():
     redtide_tweets = redtide_tweets[['id_str', 'tweet_full_contents']]
 
     print("Preprocessing Redtide Dataset...")
-    redtide_tweets_vectorized = vectoriser.transform(preprocess_text(redtide_tweets['tweet_full_contents']))
+    redtide_tweets_preprocessed = preprocess_text(redtide_tweets['tweet_full_contents'])
+
+    print("Preparing preprocessed data for use with model...")
+    redtide_tweets_vectorized = vectoriser.transform(redtide_tweets_preprocessed)
 
     print("Applying model to predict redtide sentiment...")
     redtide_sentiment = model.predict(redtide_tweets_vectorized)
 
     print("Appending predicted sentiments to redtide dataset...")
-    redtide_tweets['predicted_sentiment'] = redtide_sentiment.tolist()
-    # Drop tweet content because we already have it in another database collection
-    redtide_tweets = redtide_tweets[['id_str', 'predicted_sentiment']]
+    redtide_tweets['predicted_sentiment'] = redtide_sentiment
 
     print("Splitting data into postitive and negative collections...")
-    redtide_tweets_pos = redtide_tweets[redtide_tweets['predicted_sentiment'] == 1]
-    redtide_tweets_neg = redtide_tweets[redtide_tweets['predicted_sentiment'] == 0]
+    # Sentiment values 0 and 1 mean negative and positive respectively
+    redtide_tweets_pos = redtide_tweets_preprocessed[redtide_tweets['predicted_sentiment'] == 1]
+    redtide_tweets_neg = redtide_tweets_preprocessed[redtide_tweets['predicted_sentiment'] == 0]
 
-    print("Generating wordclouds...")
-    generate_wordcloud(redtide_tweets_pos, redtide_tweets_neg)
+    print("Generating negative wordcloud...")
+    generate_wordcloud(redtide_tweets_neg)
+    print("Generating positive wordcloud...")
+    generate_wordcloud(redtide_tweets_pos)
 
     print("Saving redtide dataset to csv...")
+    # Drop tweet content because we already have it in another database collection
+    redtide_tweets = redtide_tweets[['id_str', 'predicted_sentiment']]
     redtide_tweets.to_csv('historical_tweets_with_sentiment.csv', index=False)
 
 
 if __name__ == "__main__":
     main()
-    plt.show()
