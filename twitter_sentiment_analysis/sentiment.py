@@ -96,9 +96,8 @@ def preprocess_text(data_original):
 def generate_wordcloud(data):
     # Generate wordcloud for negative tweets
     plt.figure(figsize=(20, 20))
-    wc = WordCloud(max_words=1000, width=1600, height=800, collocations=False).generate(" ".join(data))
-    plt.imshow(wc)
-    plt.show()
+    wc = WordCloud(max_words=1000, width=1920, height=1080, collocations=False).generate(" ".join(data))
+    return wc
 
 
 def generate_confusion_matrix(y_test, y_pred):
@@ -114,6 +113,7 @@ def generate_confusion_matrix(y_test, y_pred):
     plt.xlabel("Predicted Values", fontdict={'size': 14}, labelpad=10)
     plt.ylabel("Actual Values", fontdict={'size': 14}, labelpad=10)
     plt.title("Confusion Matrix", fontdict={'size': 14}, pad=20)
+    plt.tight_layout()
     plt.show()
 
 
@@ -166,7 +166,7 @@ def main():
     print("Loading redtide dataset...")
     redtide_tweets = pd.read_csv("tweet_archive.csv")
     print("Extracting fields of interest...")
-    redtide_tweets = redtide_tweets[['id_str', 'tweet_full_contents']]
+    redtide_tweets = redtide_tweets[['id_str', 'created_at', 'tweet_full_contents']]
 
     print("Preprocessing Redtide Dataset...")
     redtide_tweets_preprocessed = preprocess_text(redtide_tweets['tweet_full_contents'])
@@ -186,13 +186,12 @@ def main():
     redtide_tweets_neg = redtide_tweets_preprocessed[redtide_tweets['predicted_sentiment'] == 0]
 
     print("Generating negative wordcloud...")
-    generate_wordcloud(redtide_tweets_neg)
+    generate_wordcloud(redtide_tweets_neg).to_file('negative_wordcloud.png')
+
     print("Generating positive wordcloud...")
-    generate_wordcloud(redtide_tweets_pos)
+    generate_wordcloud(redtide_tweets_pos).to_file('positive_wordcloud.png')
 
     print("Saving redtide dataset to csv...")
-    # Drop tweet content because we already have it in another database collection
-    redtide_tweets = redtide_tweets[['id_str', 'predicted_sentiment']]
     redtide_tweets.to_csv('historical_tweets_with_sentiment.csv', index=False)
 
 
