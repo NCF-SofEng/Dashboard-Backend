@@ -1,7 +1,8 @@
 import { Router } from "express";
 import ApiResponse from "../ApiResponse.js";
 import { Database } from "../libs/database.js";
-
+//D.R. 
+// Generates a router that allows the frontend to pull videos from the mongoDB database.
 export default function(db: Database): Router {
     const router = Router();
     router.get("/videos", (req, res) => {
