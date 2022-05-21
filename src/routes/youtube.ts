@@ -1,8 +1,11 @@
 import { Router } from "express";
 import ApiResponse from "../ApiResponse.js";
 import { Database } from "../libs/database.js";
-//D.R. 
-// Generates a router that allows the frontend to pull videos from the mongoDB database.
+/* @author D.R. 
+* @ param db: The database that we'll be connecting to.
+* connects the frontend to the backend, allowing it to ask for information pulled from youtube in the mongodb database.
+* In essence, this allows the youtubebody.js to ask the database for info.
+*/ 
 export default function(db: Database): Router {
     const router = Router();
     router.get("/videos", (req, res) => {

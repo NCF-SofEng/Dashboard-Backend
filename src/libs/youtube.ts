@@ -2,11 +2,14 @@ import { GridFSBucketReadStreamOptionsWithRevision } from "mongodb";
 import fetch from "node-fetch";
 import { Database } from "./database.js";
 /*
-*D.R.
+* @author D.R.
 * The purpose of this class is to contain the getVideos function, whose main purpose is to pull videos into the MongoDB Database
 * using API calls if they are red tide related.
 */
 export class Youtube{
+    /* @param db: The database we're using in mongoDB
+    * @return returns video id info to the mongoDB database.
+    */
     //Intakes the imported MongoDB database as a parameter
     public async getvideos(db:Database){
         //every time this function is executed, the links are immedietally triggered and their responses are logged into the string array.
