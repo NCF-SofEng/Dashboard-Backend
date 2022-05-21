@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d316f992-869d-4a55-b3a5-b400e545efa2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/confusion_matrix.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/negative_wordcloud.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/positive_wordcloud.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/roc_curve.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sentiment_by_month.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/visualize.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/twitter_sentiment_analysis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/twitter_sentiment_analysis.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/historical_tweets_with_sentiment.csv" beforeDir="false" afterPath="$PROJECT_DIR$/historical_tweets_with_sentiment.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sentiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/sentiment.py" afterDir="false" />
-    </list>
+    <list default="true" id="d316f992-869d-4a55-b3a5-b400e545efa2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -139,8 +128,16 @@
       <workItem from="1652835874191" duration="644000" />
       <workItem from="1652927936702" duration="31304000" />
       <workItem from="1652993028577" duration="3034000" />
-      <workItem from="1653008209333" duration="24240000" />
+      <workItem from="1653008209333" duration="24477000" />
     </task>
+    <task id="LOCAL-00001" summary="finished sentiment analysis and generated figures for frontend">
+      <created>1653086245106</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1653086245106</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,6 +156,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="finished sentiment analysis and generated figures for frontend" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished sentiment analysis and generated figures for frontend" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/twitter_sentiment_analysis$sentiment.coverage" NAME="sentiment Coverage Results" MODIFIED="1653013305430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
